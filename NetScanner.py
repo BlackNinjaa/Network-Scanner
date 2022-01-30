@@ -3,7 +3,7 @@ import scapy.all as scapy
 
 #Yapilacaklar
 #
-#ARP isteği (arp reques)
+#ARP isteği (arp request)
 #Yayın (broadcast)
 #Cevap(response)
 
