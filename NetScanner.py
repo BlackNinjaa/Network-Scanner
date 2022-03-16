@@ -1,16 +1,25 @@
-from socket import timeout
-import scapy.all as scapy 
+import scapy.all as scapy
+import optparse
 
-#Yapilacaklar
-#
-#ARP isteği (arp request)
-#Yayın (broadcast)
-#Cevap(response)
+            #------> Yapılacaklar <------
+                    #İstek
+                    #Yayin
+                    #cevap
 
-ip_istek = input("Taramak İstediginiz ip adresini giriniz: ")
+def kullanci_girdi():
+    parse_object = optparse.OptionParser()
+    parse_object.add_option("-i","--ip",dest="ip_adresi",help="ip Adresini giriniz !")
 
-arp_istek = scapy.ARP(pdst = ip_istek + "/24")
-broadcast_yayin = scapy.Ether(dst = "ff:ff:ff:ff:ff:ff")
-combined_packet = broadcast_yayin/arp_istek
-(answered_list,unaswered_list) = scapy.srp(combined_packet,timeout=1)
-answered_list.summary()
+    (user_input,arguments) = parse_object.parse_args()
+    return user_input
+
+def tarama(ip):
+    arp_istek = scapy.ARP(pdst=ip)
+    yayin_paketi = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+
+    paket_birlestir = yayin_paketi / arp_istek
+    (cevaplanan_paketler,cevaplanmayan_paketler) = scapy.srp(paket_birlestir,timeout = 1)
+    cevaplanan_paketler.summary()
+
+taranacak_ip = kullanci_girdi()
+tarama(taranacak_ip.ip_adresi)
